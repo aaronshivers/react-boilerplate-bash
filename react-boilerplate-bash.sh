@@ -29,7 +29,7 @@ npm i react react-dom normalize.css
 
 # Setup README.md
 touch README.md
-echo "#$1" >> README.md
+echo "# $1" >> README.md
 
 # Setup webpack.config.js
 touch webpack.config.js
