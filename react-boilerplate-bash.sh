@@ -18,12 +18,13 @@ npm init -y
 # Add Scripts to package.json
 sed -i "7i\    \"start\": \"node server/server.js\"," package.json
 sed -i "7i\    \"dev-server\": \"webpack-dev-server\"," package.json
-sed -i "7i\    \"build:dev\": \"webpack --mode=development\"," package.json
+sed -i "
+7i\    \"build:dev\": \"webpack --mode=development\"," package.json
 sed -i "7i\    \"build:prod\": \"webpack -p --env production\"," package.json
 sed -i "7i\    \"heroku-postbuild\": \"npm run build:prod\"," package.json
 
 # Install Project Dependencies
-npm i -D @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader mini-css-extract-plugin node-sass sass-loader style-loader webpack webpack-cli webpack-dev-server
+npm i -D @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader mini-css-extract-plugin node-sass sass-loader style-loader webpack webpack-cli webpack-dev-server url-loader
 npm i react react-dom normalize.css
 
 # Setup README.md
@@ -63,6 +64,13 @@ module.exports = {
             }
           }
         ]
+      }, {
+        test: /\.(png|jpg|gif)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+          },
+        ],
       }
     ]
   },
