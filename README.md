@@ -7,6 +7,17 @@ Run this script with the name of your project
 sh react-boilerplate-bash your-project-name
 ```
 
+## Starting
+Move into the project directory
+```
+cd your-project-name
+```
+Start the development server
+```
+npm run dev-server
+```
+Navigate your browser to http://localhost:8080
+
 ## Notice
 
 ### Naming Rules
