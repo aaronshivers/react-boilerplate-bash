@@ -25,7 +25,7 @@ sed -i "7i\    \"heroku-postbuild\": \"npm run build:prod\"," package.json
 
 # Install Project Dependencies
 npm i -D @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader mini-css-extract-plugin node-sass sass-loader style-loader webpack webpack-cli webpack-dev-server url-loader
-npm i react react-dom normalize.css
+npm i react react-dom
 
 # Setup README.md
 touch README.md
@@ -91,7 +91,6 @@ touch src/app.js
 echo "import React from 'react'
 import { render } from 'react-dom'
 import App from './components/App'
-import 'normalize.css/normalize.css'
 import './styles/styles.scss'
 
 render(<App />, document.getElementById('app'))" >> src/app.js
