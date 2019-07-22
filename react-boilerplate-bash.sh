@@ -18,13 +18,12 @@ npm init -y
 # Add Scripts to package.json
 sed -i "7i\    \"start\": \"node server/server.js\"," package.json
 sed -i "7i\    \"dev-server\": \"webpack-dev-server\"," package.json
-sed -i "
-7i\    \"build:dev\": \"webpack --mode=development\"," package.json
+sed -i "7i\    \"build:dev\": \"webpack --mode=development\"," package.json
 sed -i "7i\    \"build:prod\": \"webpack -p --env production\"," package.json
 sed -i "7i\    \"heroku-postbuild\": \"npm run build:prod\"," package.json
 
 # Install Project Dependencies
-npm i -D @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader mini-css-extract-plugin node-sass sass-loader style-loader webpack webpack-cli webpack-dev-server url-loader
+npm i -D @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader mini-css-extract-plugin node-sass sass-loader style-loader webpack webpack-cli webpack-dev-server url-loader bootstrap react-bootstrap
 npm i react react-dom
 
 # Setup README.md
@@ -124,7 +123,14 @@ touch public/index.html
 echo "<!DOCTYPE html>
 <html>
 <head>
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
   <link rel=\"stylesheet\" type=\"text/css\" href=\"/dist/styles.css\">
+  <link
+    rel=\"stylesheet\"
+    href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\"
+    integrity=\"sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T\"
+    crossorigin=\"anonymous\"
+  />
   <title>$1</title>
 </head>
 <body>
@@ -141,10 +147,13 @@ dist/" >> .gitignore
 # Setup src/components/App.js
 touch src/components/App.js
 echo "import React from 'react'
+import { Container } from 'react-bootstrap'
 
 const App = () => (
   <div>
-    <h1>$1</h1>
+    <Container>
+      <h1 className=\"display-1 text-center\">$1</h1>
+    </Container>
   </div>
 )
 
