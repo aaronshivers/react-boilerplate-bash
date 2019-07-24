@@ -157,23 +157,22 @@ export default App" >> src/components/App.js
 # Setup src/styles/custom/_custom.scss
 touch src/styles/custom/_custom.scss
 echo "// Colors
-\$off-white: #f7f7f7;
-\$dark-grey: #333;
-\$grey: #666;
-\$light-grey: #888;
-\$blue: #1c88bf;
-\$dark-blue: #364051;
+\$purple: #3f3250;
+\$blue: #22252c;
+\$red: #e14658;
+\$yellow: #c0b3a0;
+\$gray-900: #16181d;
+\$gray-800: #2c303a;
+\$gray-700: #434956;
+\$gray-600: #596173;
+\$gray-500: #6f7990;
+\$gray-400: #ec94a6;
+\$gray-300: #a9afbc;
+\$gray-200: #cdc9d3;
+\$gray-100: #e2e4e9;
 
-// Font Sizes
-\$font-size-large: 1.8rem;
-\$font-size-small: 1.4rem;
-
-// Spacing
-\$s-size: 1.2rem;
-\$m-size: 1.6rem;
-\$l-size: 3.2rem;
-\$xl-size: 4.8rem;
-\$desktop-breakpoint: 45rem;" >> src/styles/custom/_custom.scss
+\$primary: \$purple;
+\$secondary: \$blue;" >> src/styles/custom/_custom.scss
 
 # Setup src/styles/styles.scss
 touch src/styles/styles.scss
