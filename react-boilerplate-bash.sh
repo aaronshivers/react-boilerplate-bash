@@ -7,7 +7,7 @@ mkdir $1
 cd $1
 
 # Create Project Sub-Directories
-mkdir public server src src/components src/styles src/styles/base src/styles/components
+mkdir public server src src/components src/styles src/styles/custom src/styles/components
 
 # Initialize a Git Repository
 git init
@@ -125,12 +125,6 @@ echo "<!DOCTYPE html>
 <html>
 <head>
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-  <link
-    rel=\"stylesheet\"
-    href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\"
-    integrity=\"sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T\"
-    crossorigin=\"anonymous\"
-  />
   <link rel=\"stylesheet\" type=\"text/css\" href=\"/dist/styles.css\">
   <title>$1</title>
 </head>
@@ -160,38 +154,8 @@ const App = () => (
 
 export default App" >> src/components/App.js
 
-# Setup src/styles/base/_base.scss
-touch src/styles/base/_base.scss
-echo "* {
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 62.5%;
-}
-
-body {
-  color: \$dark-grey;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: \$m-size;
-  line-height: 1.6;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:disabled {
-  cursor: default;
-}
-
-.is-active {
-  font-weight: bold;
-}
-" >> src/styles/base/_base.scss
-
-# Setup src/styles/base/_settings.scss
-touch src/styles/base/_settings.scss
+# Setup src/styles/custom/_custom.scss
+touch src/styles/custom/_custom.scss
 echo "// Colors
 \$off-white: #f7f7f7;
 \$dark-grey: #333;
@@ -209,12 +173,12 @@ echo "// Colors
 \$m-size: 1.6rem;
 \$l-size: 3.2rem;
 \$xl-size: 4.8rem;
-\$desktop-breakpoint: 45rem;" >> src/styles/base/_settings.scss
+\$desktop-breakpoint: 45rem;" >> src/styles/custom/_custom.scss
 
 # Setup src/styles/styles.scss
 touch src/styles/styles.scss
-echo "@import './base/settings';
-@import './base/base';" >> src/styles/styles.scss
+echo "@import './custom/custom';
+@import '../../node_modules/bootstrap/scss/bootstrap';" >> src/styles/styles.scss
 
 # Stage Files in Git
 git add .
