@@ -168,7 +168,7 @@ echo "// Colors
 \$gray-500: #6f7990;
 \$gray-400: #8c94a6;
 \$gray-300: #a9afbc;
-\$gray-200: #cdc9d3;
+\$gray-200: #c5c9d3;
 \$gray-100: #e2e4e9;
 
 \$primary: \$purple;
