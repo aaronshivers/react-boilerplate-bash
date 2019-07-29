@@ -23,8 +23,8 @@ sed -i "7i\    \"build:prod\": \"webpack -p --env production\"," package.json
 sed -i "7i\    \"heroku-postbuild\": \"npm run build:prod\"," package.json
 
 # Install Project Dependencies
-npm i -D @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader mini-css-extract-plugin node-sass sass-loader style-loader webpack webpack-cli webpack-dev-server url-loader bootstrap react-bootstrap
-npm i react react-dom
+npm i -D react react-dom @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader mini-css-extract-plugin node-sass sass-loader style-loader webpack webpack-cli webpack-dev-server url-loader bootstrap react-bootstrap
+npm i express
 
 # Setup README.md
 touch README.md
@@ -35,54 +35,57 @@ touch webpack.config.js
 echo "const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-module.exports = {
-  entry: ['./src/app.js'],
-  output: {
-    path: path.join(__dirname, 'public', 'dist')
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js\$/,
-        exclude: /node_modules/,
-        loader:'babel-loader'
-      }, {
-        test: /\.s?css\$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader
-          }, {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true
+module.exports = env => {
+
+  return {
+    entry: ['./src/app.js'],
+    output: {
+      path: path.join(__dirname, 'public', 'dist')
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js\$/,
+          exclude: /node_modules/,
+          loader:'babel-loader'
+        }, {
+          test: /\.s?css\$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader
+            }, {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true
+              }
+            }, {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true
+              }
             }
-          }, {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true
-            }
-          }
-        ]
-      }, {
-        test: /\.(png|jpg|gif)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-          },
-        ],
-      }
-    ]
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'styles.css'
-    })
-  ],
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: path.join(__dirname, 'public'),
-    historyApiFallback: true,
-    publicPath: '/dist/'
+          ]
+        }, {
+          test: /\.(png|jpg|gif)$/i,
+          use: [
+            {
+              loader: 'url-loader',
+            },
+          ],
+        }
+      ]
+    },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: 'styles.css'
+      })
+    ],
+    devtool: env === 'production' ? 'source-map' : 'inline-source-map',
+    devServer: {
+      contentBase: path.join(__dirname, 'public'),
+      historyApiFallback: true,
+      publicPath: '/dist/'
+    }
   }
 }" >> webpack.config.js
 
