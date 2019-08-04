@@ -77,7 +77,8 @@ module.exports = env => {
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: 'styles.css'
+        filename: '[name].css',
+        chunkFilemane: '[id].css'
       })
     ],
     devtool: env === 'production' ? 'source-map' : 'inline-source-map',
@@ -128,7 +129,7 @@ echo "<!DOCTYPE html>
 <html>
 <head>
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-  <link rel=\"stylesheet\" type=\"text/css\" href=\"/dist/styles.css\">
+  <link rel=\"stylesheet\" type=\"text/css\" href=\"/dist/main.css\">
   <title>$1</title>
 </head>
 <body>
@@ -140,7 +141,8 @@ echo "<!DOCTYPE html>
 # Setup .gitignore
 touch .gitignore
 echo "node_modules/
-dist/" >> .gitignore
+dist/
+.env" >> .gitignore
 
 # Setup src/components/App.js
 touch src/components/App.js
