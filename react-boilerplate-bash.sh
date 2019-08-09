@@ -144,6 +144,9 @@ echo "node_modules/
 dist/
 .env" >> .gitignore
 
+# Create Empty .env file
+touch .env
+
 # Setup src/components/App.js
 touch src/components/App.js
 echo "import React from 'react'
