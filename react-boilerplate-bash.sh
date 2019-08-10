@@ -33,6 +33,7 @@ echo "# $1" >> README.md
 # Setup webpack.config.js
 touch webpack.config.js
 echo "const path = require('path')
+const Dotenv = require('dotenv-webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = env => {
@@ -79,7 +80,8 @@ module.exports = env => {
       new MiniCssExtractPlugin({
         filename: '[name].css',
         chunkFilemane: '[id].css'
-      })
+      }),
+      new Dotenv()
     ],
     devtool: env === 'production' ? 'source-map' : 'inline-source-map',
     devServer: {
