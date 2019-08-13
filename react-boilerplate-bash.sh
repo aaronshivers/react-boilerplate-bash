@@ -23,7 +23,7 @@ sed -i "7i\    \"build:prod\": \"webpack -p --env production\"," package.json
 sed -i "7i\    \"heroku-postbuild\": \"npm run build:prod\"," package.json
 
 # Install Project Dependencies
-npm i -D react react-dom @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader mini-css-extract-plugin node-sass sass-loader style-loader webpack webpack-cli webpack-dev-server url-loader bootstrap react-bootstrap
+npm i -D react react-dom @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader mini-css-extract-plugin node-sass sass-loader style-loader webpack webpack-cli webpack-dev-server url-loader bootstrap react-bootstrap dotenv-webpack
 npm i express
 
 # Setup README.md
