@@ -7,7 +7,7 @@ mkdir $1
 cd $1
 
 # Create Project Sub-Directories
-mkdir public server src src/components src/styles src/styles/custom src/styles/components
+mkdir server src src/components src/styles src/styles/custom src/styles/components
 
 # Initialize a Git Repository
 git init
@@ -23,8 +23,8 @@ sed -i "7i\    \"build:prod\": \"webpack -p --env production\"," package.json
 sed -i "7i\    \"heroku-postbuild\": \"npm run build:prod\"," package.json
 
 # Install Project Dependencies
-npm i -D react react-dom @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader mini-css-extract-plugin node-sass sass-loader style-loader webpack webpack-cli webpack-dev-server url-loader bootstrap react-bootstrap dotenv-webpack
-npm i express
+npm i -D @babel/cli @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader mini-css-extract-plugin node-sass sass-loader style-loader webpack webpack-cli webpack-dev-server url-loader bootstrap dotenv-webpack clean-webpack-plugin html-webpack-plugin eslint eslint-config-airbnb eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react eslint-plugin-react-hooks
+npm i express react react-dom react-bootstrap
 
 # Setup README.md
 touch README.md
@@ -32,23 +32,23 @@ echo "# $1" >> README.md
 
 # Setup webpack.config.js
 touch webpack.config.js
-echo "const path = require('path')
-const Dotenv = require('dotenv-webpack')
+echo "const Dotenv = require('dotenv-webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-module.exports = env => {
-
-  return {
-    entry: ['./src/app.js'],
-    output: {
-      path: path.join(__dirname, 'public', 'dist')
+module.exports = env => (
+  {
+    entry: ['./src/app.jsx'],
+    resolve: {
+      extensions: ['.js', '.jsx']
     },
     module: {
       rules: [
         {
-          test: /\.js\$/,
+          test: /\.jsx?\$/,
           exclude: /node_modules/,
-          loader:'babel-loader'
+          loader: 'babel-loader'
         }, {
           test: /\.s?css\$/,
           use: [
@@ -70,13 +70,21 @@ module.exports = env => {
           test: /\.(png|jpg|gif)$/i,
           use: [
             {
-              loader: 'url-loader',
-            },
-          ],
+              loader: 'url-loader'
+            }
+          ]
         }
       ]
     },
     plugins: [
+      new CleanWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        template: './src/index.html',
+        title: '$1',
+        meta: {
+          viewport: 'width=device-width, initial-scale=1'
+        }
+      }),
       new MiniCssExtractPlugin({
         filename: '[name].css',
         chunkFilemane: '[id].css'
@@ -85,21 +93,19 @@ module.exports = env => {
     ],
     devtool: env === 'production' ? 'source-map' : 'inline-source-map',
     devServer: {
-      contentBase: path.join(__dirname, 'public'),
-      historyApiFallback: true,
-      publicPath: '/dist/'
+      historyApiFallback: true
     }
   }
-}" >> webpack.config.js
+)" >> webpack.config.js
 
-# Setup src/app.js
-touch src/app.js
+# Setup src/app.jsx
+touch src/app.jsx
 echo "import React from 'react'
 import { render } from 'react-dom'
 import App from './components/App'
 import './styles/styles.scss'
 
-render(<App />, document.getElementById('app'))" >> src/app.js
+render(<App />, document.getElementById('app'))" >> src/app.jsx
 
 # Setup .babelrc
 touch .babelrc
@@ -114,6 +120,7 @@ echo "{
 touch server/server.js
 echo "const path = require('path')
 const express = require('express')
+
 const app = express()
 const publicPath = path.join(__dirname, '..', 'public')
 const port = process.env.PORT || 3000
@@ -122,23 +129,18 @@ app.use(express.static(publicPath))
 
 app.get('*', (req, res) => res.sendFile(path.join(publicPath, 'index.html')))
 
-app.listen(port, () => console.log(\`Server running on port \${ port }.\`))
-" >> server/server.js
+app.listen(port, () => console.log(\`Server running on port \${port}.\`))" >> server/server.js
 
-# Setup public/index.html
-touch public/index.html
+# Setup src/index.html
+touch src/index.html
 echo "<!DOCTYPE html>
 <html>
 <head>
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-  <link rel=\"stylesheet\" type=\"text/css\" href=\"/dist/main.css\">
-  <title>$1</title>
 </head>
 <body>
-  <div id=\"app\"></div>
-  <script src=\"/dist/main.js\"></script>
+<div id=\"app\"></div>
 </body>
-</html>" >> public/index.html
+</html>" >> src/index.html
 
 # Setup .gitignore
 touch .gitignore
@@ -149,20 +151,18 @@ dist/
 # Create Empty .env file
 touch .env
 
-# Setup src/components/App.js
-touch src/components/App.js
+# Setup src/components/App.jsx
+touch src/components/App.jsx
 echo "import React from 'react'
 import { Container } from 'react-bootstrap'
 
 const App = () => (
-  <div>
-    <Container>
-      <h1 className=\"display-1 text-center\">$1</h1>
-    </Container>
-  </div>
+  <Container>
+    <h1 className=\"display-1 text-center\">$1</h1>
+  </Container>
 )
 
-export default App" >> src/components/App.js
+export default App" >> src/components/App.jsx
 
 # Setup src/styles/custom/_custom.scss
 touch src/styles/custom/_custom.scss
@@ -188,6 +188,42 @@ echo "// Colors
 touch src/styles/styles.scss
 echo "@import './custom/custom';
 @import '../../node_modules/bootstrap/scss/bootstrap';" >> src/styles/styles.scss
+
+# Setup .eslintignore
+touch .eslintignore
+echo "node_modules/
+dist/" >> .eslintignore
+
+# Setup .eslintrc.js
+touch .eslintrc.js
+echo "module.exports = {
+  env: {
+    browser: true,
+    es6: true,
+  },
+  extends: [
+    'airbnb',
+  ],
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
+  },
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 2018,
+    sourceType: 'module',
+  },
+  plugins: [
+    'react',
+  ],
+  rules: {
+    semi: ['error', 'never'],
+    'comma-dangle': ['error', 'never'],
+    'arrow-parens': ['warn', 'as-needed']
+  },
+}" >> .eslintrc.js
 
 # Stage Files in Git
 git add .
