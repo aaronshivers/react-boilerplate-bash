@@ -48,7 +48,13 @@ module.exports = env => (
         {
           test: /\.jsx?\$/,
           exclude: /node_modules/,
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-react'
+            ]
+          }
         }, {
           test: /\.s?css\$/,
           use: [
@@ -106,15 +112,6 @@ import App from './components/App'
 import './styles/styles.scss'
 
 render(<App />, document.getElementById('app'))" >> src/app.jsx
-
-# Setup .babelrc
-touch .babelrc
-echo "{
-  \"presets\": [
-    \"@babel/preset-env\",
-    \"@babel/preset-react\"
-  ]
-}" >> .babelrc
 
 # Setup server/server.js
 touch server/server.js
